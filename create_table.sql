@@ -28,6 +28,18 @@ CREATE INDEX idx_accounts_owner_id ON accounts (owner_id);
 CREATE INDEX idx_accounts_partner_id ON accounts (partner_id);
 
 -- テーブルの作成
+CREATE TABLE categories (
+  category_id UUID PRIMARY KEY, -- カテゴリID
+  category_name VARCHAR(255) NOT NULL, -- カテゴリ名
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- 作成日時
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- 最終更新日時
+  is_deleted BOOLEAN NOT NULL DEFAULT FALSE -- 論理削除用のフラグ
+);
+
+-- インデックスの作成（必要ならば追加）
+CREATE INDEX idx_categories_category_name ON categories (category_name);
+
+-- テーブルの作成
 CREATE TABLE transactions (
   transaction_id UUID PRIMARY KEY, -- 取引ID
   user_id UUID NOT NULL REFERENCES users(user_id) ON DELETE CASCADE, -- ユーザーID
@@ -45,18 +57,6 @@ CREATE TABLE transactions (
 -- インデックスの作成（必要ならば追加）
 CREATE INDEX idx_transactions_user_id ON transactions (user_id);
 CREATE INDEX idx_transactions_category_id ON transactions (category_id);
-
--- テーブルの作成
-CREATE TABLE categories (
-  category_id UUID PRIMARY KEY, -- カテゴリID
-  category_name VARCHAR(255) NOT NULL, -- カテゴリ名
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- 作成日時
-  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- 最終更新日時
-  is_deleted BOOLEAN NOT NULL DEFAULT FALSE -- 論理削除用のフラグ
-);
-
--- インデックスの作成（必要ならば追加）
-CREATE INDEX idx_categories_category_name ON categories (category_name);
 
 -- テーブルの作成
 CREATE TABLE budgets (
